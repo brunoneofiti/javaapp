@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.backbase.assignment.brunoneofiti</groupId>
+	<artifactId>javaapp</artifactId>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<name>javaapp Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<!-- Encoding do projeto -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<version.jstl>1.2</version.jstl>
+		<version.servlet>3.0.1</version.servlet>
+		
+		<!-- Spring version -->
+		<version.spring.framework>4.3.11.RELEASE</version.spring.framework> 
+		<version.spring.security>4.2.3.RELEASE</version.spring.security>
+
+		<!-- Apache Camel version -->
+		<version.apache.camel>2.19.3</version.apache.camel>
+
+		<!-- JUnit version -->
+		<version.junit>3.8.1</version.junit>
+
+		<!-- other plugin versions -->
+		<version.compiler.plugin>3.7.0</version.compiler.plugin>
+        <version.war.plugin>2.1.1</version.war.plugin>
+
+		<!-- Java version -->
+		<version.java>1.8</version.java>
+
+		<maven.compiler.debug>true</maven.compiler.debug>
+		<maven.compiler.optimize>false</maven.compiler.optimize>
+	</properties>
+
+
+	<dependencies>
+
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${version.servlet}</version>
+		    <scope>provided</scope>
+		</dependency>
+
+	    <!-- Servlet -->
+	    <dependency>
+	        <groupId>javax.servlet.jsp</groupId>
+	        <artifactId>jsp-api</artifactId>
+	        <version>2.1</version>
+	        <scope>provided</scope>
+	    </dependency>
+
+		<!-- jstl for jsp page -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${version.jstl}</version>
+		</dependency>
+
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${version.spring.framework}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${version.spring.framework}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version.spring.framework}</version>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${version.spring.security}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${version.spring.security}</version>
+		</dependency>
+
+		<!-- Apache Camel -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${version.apache.camel}</version>
+		</dependency>
+
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>javaapp</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.compiler.plugin}</version>
+				<configuration>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.war.plugin}</version>
+                <configuration>
+                    <!-- Java EE nao necessita do web.xml, Maven precisa saber disso -->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin> 
+		</plugins>
+		
+	</build>
+</project>

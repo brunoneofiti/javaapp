@@ -1,0 +1,5 @@
+com\backbase\assignment\config\AppConfig.class
+com\backbase\assignment\web\controller\HelloController.class
+com\backbase\assignment\config\core\SpringSecurityInitializer.class
+com\backbase\assignment\config\core\SpringMvcInitializer.class
+com\backbase\assignment\config\SecurityConfig.class
