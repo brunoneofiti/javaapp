@@ -13,7 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("mkyong").password("123456").roles("USER");
+		auth.inMemoryAuthentication().withUser("bruno").password("123456").roles("USER");
 	}
 
 	//.csrf() is optional, enabled by default, if using WebSecurityConfigurerAdapter constructor

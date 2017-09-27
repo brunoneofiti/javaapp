@@ -9,13 +9,14 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloController {
 
+
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security Custom Login Form");
 		model.addObject("message", "This is welcome page!");
-		model.setViewName("hello");
+		model.setViewName("index");
 		return model;
 
 	}
@@ -49,5 +50,17 @@ public class HelloController {
 		return model;
 
 	}
+
+	@RequestMapping(value = { "/none", "/form**" }, method = RequestMethod.GET)
+	public ModelAndView formPage() {
+
+		ModelAndView model = new ModelAndView();
+		model.addObject("city", "Amsterdan");
+		model.setViewName("form");
+		return model;
+
+	}
+
+
 
 }

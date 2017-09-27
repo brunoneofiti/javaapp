@@ -7,7 +7,7 @@
 
 <h1>List of ING ATMs by city</h1>
 
-<h2>Selected List:</h2>
+<h2>Selected List: ${title}</h2>
 
 <p>a</p>
 
