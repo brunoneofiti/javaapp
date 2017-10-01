@@ -12,19 +12,31 @@
 
 <body>
 
-
 	<div id="page-wrapper">
 		<div class="container-fluid">
 		
 			<div class="row">
 			
 				<div class="col-lg-12">
-					<h1 class="page-header">List of ING ATMs by city</h1>
-					<h2>Selected List: ${city}</h2>
+					<h1 class="page-header">${title}</h1>
 				</div>
-			
-				<p>${message}</p>
-			
+
+				<h2>${subtitle}</h2>
+
+				<form name="atmForm" action="<c:url value='/ws/getAtmList' />" method="GET" class="form-inline">
+					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+
+				    <div class="col-lg-8 form-group">
+				      <label for="city">Please select one city:</label>
+						<select name="cityname" class="form-control">
+							<c:forEach items="${cities}" var="city">
+								<option><c:out value="${city.name}"></c:out></option>
+							</c:forEach>
+						</select>
+						<input name="submit" type="submit" value="Show me" />
+					</div>
+		
+				</form>
 			</div>
 		</div>
 	</div>

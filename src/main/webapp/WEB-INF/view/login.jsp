@@ -15,40 +15,39 @@
 		<div class="container-fluid">
 		
 			<div class="row">
-			
 				<div class="col-lg-12">
-					<c:if test="${empty error and empty message}">
-						<h1 class="page-header">Please, login with user and password</h1>
-					</c:if>
-
-					<c:if test="${not empty error}">
-						<h1 class="page-header">${error}</h1>
-					</c:if>
-					
-					<c:if test="${not empty msg}">
-						<h1 class="page-header">${msg}</h1>
-					</c:if>
+					<h1 class="page-header">${title}</h1>
 				</div>
-				
 			</div>
 			
-			<div class="col-lg-12">
-				<form name="loginForm" action="<c:url value='/login' />" method="POST">
+			<div>
+				<c:if test="${not empty error}">
+					<div class="alert alert-danger">
+					  <strong>Erro:</strong> ${error}.
+					</div>					
+				</c:if>
+				
+				<c:if test="${not empty content}">
+					<div class="alert alert-warning">${content}</div>
+					<h2 class="page-header"></h2>
+				</c:if>
+
+				<form name="loginForm" action="<c:url value='/login' />" method="POST" class="form-inline">
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+
+				    <div class="col-lg-8 form-group">
+				      <label for="username">Username:</label>
+				      <input type="text" name="username" value="bruno" class="form-control">
+					</div>
+
+				    <div class="col-lg-8 form-group">
+				      <label for="password">Password:</label>
+				      <input type="password" name="password" class="form-control"> (tip: hireme)
+					</div>
 		
-					<table>
-						<tr>
-							<td>Username:</td>
-							<td><input type="text" name="username" value="bruno"></td>
-						</tr>
-						<tr>
-							<td>Password:</td>
-							<td><input type="password" name="password" /> (e.g. 123)</td>
-						</tr>
-						<tr>
-							<td colspan="2"><input name="submit" type="submit"	value="Go!" /></td>
-						</tr>
-					</table>
+				    <div class="col-lg-8 form-group">
+				      <input name="submit" type="submit" value="Go!" class="form-control" />
+					</div>
 				</form>
 			</div>
 			

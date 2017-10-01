@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({ "com.backbase.assignment.web.*" })
+@ComponentScan({ "com.backbase.assignment.*" })
 @Import({ SecurityConfig.class })
 public class ViewConfig extends WebMvcConfigurerAdapter {
 

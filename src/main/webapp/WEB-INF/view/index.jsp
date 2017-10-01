@@ -11,25 +11,28 @@
 	<link href="${bootstrapCss}" rel="stylesheet" />
 </head>
 
-
 <body>
-
-	<img src="<%=request.getContextPath() %>/resources/img/logo.png" alt="Logo" />
-
 
 	<div id="page-wrapper">
 		<div class="container-fluid">
 		
 			<div class="row">
-			
 				<div class="col-lg-12">
 					<h1 class="page-header">${title}</h1>
 				</div>
-				
 			</div>
+			
+			<c:url value="/restricted" var="restrictedURL" />
+			<c:url value="/restricted/selectAtmByCity" var="atmURL" />
+			<c:url value="/ws/getCity" var="cityURL" />
+			<c:url value="/ws/getCityList" var="cityListURL" />
 			
 			<div class="col-lg-12">
 				<p>${content}</p>
+				<p><a href="${restrictedURL}">Access restricted area</a></p>
+				<p><a href="${atmURL}">List ATMS</a></p>
+				<p><a href="${cityURL}">Select one Dutch city</a></p>
+				<p><a href="${cityListURL}">List of Dutch cities</a></p>
 			</div>
 			
 		</div>

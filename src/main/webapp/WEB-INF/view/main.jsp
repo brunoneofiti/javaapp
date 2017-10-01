@@ -12,33 +12,38 @@
 
 <body>
 	<c:url value="/logout" var="logoutUrl" />
+	<c:url value="/restricted/createAtm" var="createAtmsUrl" />
+	<c:url value="/restricted/selectAtmByCity" var="atmURL" />
+	<c:url value="/ws/getCity" var="cityURL" />
+	<c:url value="/ws/getCityList" var="cityListURL" />
 	
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 	</form>
 	
-	
 	<div id="page-wrapper">
 		<div class="container-fluid">
-		
 		
 			<div class="row">
 			
 				<div class="col-lg-12">
-					<h1 class="page-header">List of ING ATMs by city</h1>
-					<h2>Selected List: ${city}</h2>
+					<h1 class="page-header">${title}</h1>
 				</div>
 				
 			</div>
 			
 			<div class="col-lg-12">
 				<c:if test="${pageContext.request.userPrincipal.name != null}">
-				
 					<p>Hi ${pageContext.request.userPrincipal.name} !</p>
-					<p>List of ING ATMs: <a href="restricted/ingAtms">here</a>.<p>
-					<p><a href="javascript:formSubmit()">Here to say bye!</a><p>
-			
 				</c:if>
+				
+					<p><a href="javascript:formSubmit()">Logout!</a><p>
+
+					<p><a href="${createAtmsUrl}">Add city to ATMs List</a></p>
+					<p><a href="${atmURL}">See list of ATMs</a></p>
+					<p><a href="${cityURL}">Select one Dutch city (default Urtrach)</a></p>
+					<p><a href="${cityListURL}">List of Dutch cities</a></p>
+				
 			</div>
 		
 		</div>
