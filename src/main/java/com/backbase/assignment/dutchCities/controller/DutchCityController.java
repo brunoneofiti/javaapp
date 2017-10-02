@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backbase.assignment.dutchCities.dao.CityDAO;
 import com.backbase.assignment.dutchCities.model.City;
 import com.backbase.assignment.mainPage.dao.AddressDAO;
+import com.backbase.assignment.mainPage.dao.AtmDAO;
+import com.backbase.assignment.mainPage.model.ATM;
 import com.backbase.assignment.mainPage.model.Address;
 import com.backbase.assignment.mainPage.model.Geolocation;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -40,7 +42,7 @@ public class DutchCityController {
 			addressList = dao.getAddressesFromDatabase();
 			
 			//add to list 
-			addressList.add(new Address("Avenue Main", 10, "00545", city, new Geolocation("12", "33"), 12, "ING"));
+			addressList.add(new Address("Avenue Main", "10", "00545", city.getName(), new Geolocation("12", "33")));
 	    	
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -55,18 +57,16 @@ public class DutchCityController {
 
 	
     @RequestMapping("/ws/getAtmList")
-    public List<Address> getAtmAdress(@RequestParam(value="cityname", defaultValue="Utrecht") String cityname) {
+    public List<ATM> getAtmAdress(@RequestParam(value="cityname", defaultValue="Utrecht") String cityname) {
         
     	//get information from the "database"
-    	AddressDAO dao = new AddressDAO();
+    	AtmDAO dao = new AtmDAO();
     	
-    	//return select city from "database"
-    	//if the user choose amsterdam return none
-    	return dao.getAddressesOfOneCity(cityname);
+    	return dao.getAtmFromDatabase();
     }
 
     @RequestMapping("/ws/getCity")
-    public City getCity(@RequestParam(value="cityname", defaultValue="Utrecht") String cityname) {
+    public String getCity(@RequestParam(value="cityname", defaultValue="Utrecht") String cityname) {
         
     	//get information from the "database"
     	AddressDAO dao = new AddressDAO();
@@ -85,7 +85,8 @@ public class DutchCityController {
 
     @RequestMapping("/ws/getCityList")
     public @ResponseBody List<City> cities() {
-        
+ 
+    	
     	//get information from the "database"
     	CityDAO dao = new CityDAO(); 
     	

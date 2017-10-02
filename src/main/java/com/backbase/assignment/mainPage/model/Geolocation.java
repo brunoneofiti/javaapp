@@ -3,11 +3,11 @@ package com.backbase.assignment.mainPage.model;
 public class Geolocation {
 
 	private String lat;
-	private String lon;
+	private String lng;
 	
-	public Geolocation (String lat, String lon) {
+	public Geolocation (String lat, String lng) {
 		this.lat = lat;
-		this.lon = lon;
+		this.lng = lng;
 	}
 	
 	public String getLat() {
@@ -16,17 +16,16 @@ public class Geolocation {
 	public void setLat(String lat) {
 		this.lat = lat;
 	}
-	public String getLon() {
-		return lon;
+	public String getLng() {
+		return lng;
 	}
-	public void setLon(String lon) {
-		this.lon = lon;
+
+	public void setLng(String lng) {
+		this.lng = lng;
 	}
 	@Override
 	public String toString() {
-		return "Geolocation [lat=" + lat + ", lon=" + lon + "]";
+		return "Geolocation [lat=" + lat + ", lng=" + lng + "]";
 	}
-	
-	
 
 }

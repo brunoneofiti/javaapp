@@ -1,43 +1,31 @@
 package com.backbase.assignment.mainPage.model;
 
-import com.backbase.assignment.dutchCities.model.City;
-
 public class Address {
 
 	private String street;
-	private int housenumber;
+	private String housenumber;
 	private String postalcode;
-	private City city;
-	private Geolocation geo;
-	private int distance;
-	private String type;
+	private String city;
+	private Geolocation geoLocation;
 	
-
-	public Address(String street, int housenumber, String postalcode, City city, Geolocation geo, int distance, String type) {
+	public Address(String street, String housenumber, String postalcode, String city, Geolocation geoLocation) {
 		this.street = street;
 		this.housenumber = housenumber;
 		this.postalcode = postalcode;
 		this.city = city;
-		this.geo = geo;
-		this.distance = distance;
-		this.type = type;
+		this.geoLocation = geoLocation;
 	}
-	
-	@Override
-	public String toString() {
-		return "Address [street=" + street + ", housenumber=" + housenumber + ", postalcode=" + postalcode + ", city="
-				+ city + ", geo=" + geo + ", distance=" + distance + ", type=" + type + "]";
-	}
+
 	public String getStreet() {
 		return street;
 	}
 	public void setStreet(String street) {
 		this.street = street;
 	}
-	public int getHousenumber() {
+	public String getHousenumber() {
 		return housenumber;
 	}
-	public void setHousenumber(int housenumber) {
+	public void setHousenumber(String housenumber) {
 		this.housenumber = housenumber;
 	}
 	public String getPostalcode() {
@@ -46,29 +34,23 @@ public class Address {
 	public void setPostalcode(String postalcode) {
 		this.postalcode = postalcode;
 	}
-	public City getCity() {
+	public String getCity() {
 		return city;
 	}
-	public void setCity(City city) {
+	public void setCity(String city) {
 		this.city = city;
 	}
-	public int getDistance() {
-		return distance;
+	public Geolocation getGeoLocation() {
+		return geoLocation;
 	}
-	public void setDistance(int distance) {
-		this.distance = distance;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public Geolocation getGeo() {
-		return geo;
-	}
-	public void setGeo(Geolocation geo) {
-		this.geo = geo;
+	public void setGeoLocation(Geolocation geoLocation) {
+		this.geoLocation = geoLocation;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [street=" + street + ", housenumber=" + housenumber + ", postalcode=" + postalcode + ", city="
+				+ city + ", geoLocation=" + geoLocation + "]";
+	}
+	
 }

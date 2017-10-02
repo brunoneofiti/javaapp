@@ -15,19 +15,18 @@
 
 		<version.jstl>1.2</version.jstl>
 		<version.servlet>3.0.1</version.servlet>
+		<version.jsp-api>2.1</version.jsp-api>
 		
 		<!-- Spring version -->
 		<version.spring.framework>4.3.11.RELEASE</version.spring.framework> 
 		<version.spring.security>4.2.3.RELEASE</version.spring.security>
-		<!--  >version.jackson>2.5.1</version.jackson-->
 		<version.jackson>2.6.3</version.jackson>
 		
 		<!-- Apache Camel version -->
 		<version.apache.camel>2.19.3</version.apache.camel>
 
 		<!-- JUnit version -->
-		<version.junit>3.8.1</version.junit>
-
+		<version.junit>4.10</version.junit>
 
 		<!-- other plugin versions -->
 		<version.compiler.plugin>3.7.0</version.compiler.plugin>
@@ -55,7 +54,7 @@
 	    <dependency>
 	        <groupId>javax.servlet.jsp</groupId>
 	        <artifactId>jsp-api</artifactId>
-	        <version>2.1</version>
+	        <version>${version.jsp-api}</version>
 	        <scope>provided</scope>
 	    </dependency>
 
