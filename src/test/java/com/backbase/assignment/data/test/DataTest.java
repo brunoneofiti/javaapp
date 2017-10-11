@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.backbase.assignment.dutchCities.dao.CityDAO;
-import com.backbase.assignment.dutchCities.model.City;
-import com.backbase.assignment.ingAtms.dao.IngAtmsDAO;
-import com.backbase.assignment.mainPage.dao.AddressDAO;
-import com.backbase.assignment.mainPage.model.Address;
+import com.backbase.assignment.data.dao.TestsAtmsDAO;
+
+import br.com.brunoneofiti.app.atm.dao.AddressDAO;
+import br.com.brunoneofiti.app.atm.model.Address;
+import br.com.brunoneofiti.app.city.dao.CityDAO;
+import br.com.brunoneofiti.app.city.model.City;
 
 public class DataTest {
 
@@ -18,17 +19,17 @@ public class DataTest {
 	@Test
 	public void testJson(){
 		
-		IngAtmsDAO a = new IngAtmsDAO();
+		TestsAtmsDAO dao = new TestsAtmsDAO();
 		
-		a.create();
+		dao.create();
 	}
 	
 	@Test
 	public void testAddress(){
 		
-		AddressDAO addressDAO = new AddressDAO();
+		AddressDAO dao = new AddressDAO();
 		
-		List<Address> addressList = addressDAO.getAddressesFromDatabase();
+		List<Address> addressList = dao.getAddressesFromDatabase();
 		
 		if(addressList == null ||  addressList.isEmpty()){
 			fail();
@@ -49,9 +50,9 @@ public class DataTest {
 	@Test
 	public void testCity(){
 		
-		CityDAO cityDAO = new CityDAO();
+		CityDAO dao = new CityDAO();
 
-		List<City> cityList = cityDAO.getCities();
+		List<City> cityList = dao.getCities();
 		
 		if(cityList == null ||  cityList.isEmpty()){
 			fail();
