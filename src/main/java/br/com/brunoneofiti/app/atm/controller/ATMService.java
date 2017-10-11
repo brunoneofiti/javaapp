@@ -112,7 +112,7 @@ public class ATMService {
     	}catch (Exception e) {
     		
 			log.error(e.getMessage());
+    	}
 	}
 	
-
 }
