@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bruno Neofiti Assignment</title>
+    <title>Just a Java App</title>
 
 	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCss" />
 	<link href="${bootstrapCss}" rel="stylesheet" />
@@ -42,7 +42,7 @@
 
 				    <div class="col-lg-8 form-group">
 				      <label for="password">Password:</label>
-				      <input type="password" name="password" class="form-control"> (tip: hireme)
+				      <input type="password" name="password" class="form-control"> (tip: 123)
 					</div>
 		
 				    <div class="col-lg-8 form-group">

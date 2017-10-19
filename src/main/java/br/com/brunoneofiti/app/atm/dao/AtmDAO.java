@@ -5,16 +5,18 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
 
 import br.com.brunoneofiti.app.atm.model.ATM;
 import br.com.brunoneofiti.app.atm.model.Address;
 import br.com.brunoneofiti.app.login.controller.LoginController;
 
+@Repository 
 public class AtmDAO {
 	
 	private Log log = LogFactory.getLog(LoginController.class);
 	
-	private List<ATM> atmList = new ArrayList<ATM>();
+	private AddressDAO addressDAO;
 
 	/**
 	 * Simulate access to a database
@@ -22,15 +24,17 @@ public class AtmDAO {
 	 */
     public List<ATM> getAtmFromDatabase() {
     	
-    	AddressDAO dao = new AddressDAO();
+    	List<ATM> atmList = new ArrayList<ATM>();
     	
     	try{
 
-        	for(Address address: dao.getAddressesFromDatabase()){
+    		addressDAO = new AddressDAO();
+    		
+    		for(Address address: addressDAO.getAddressesFromDatabase()){
         		
         		if(address != null){
         			ATM atm = new ATM(address, 0, "ING");
-        			this.atmList.add(atm);
+        			atmList.add(atm);
         		}
         	}
 
@@ -40,12 +44,7 @@ public class AtmDAO {
     		log.error(e.getMessage());
 		}
     	
-    	
-    	return this.atmList;
+    	return atmList;
 	}
-    
-    public List<ATM> getAtmList(){
-    	return this.atmList;
-    }
     
 }

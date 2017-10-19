@@ -13,12 +13,22 @@ public class LoginController {
 
 	private Log log = LogFactory.getLog(LoginController.class);
 	
+	private ModelAndView model;
+
+	
+	/**
+	 * Login Page. 
+	 * Public Access
+	 * @param error
+	 * @param logout
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginPage(
 			@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
 
-		ModelAndView model = new ModelAndView();
+		model = new ModelAndView();
 		
 		model.addObject("title", "Please, login with user and password");
 
@@ -28,6 +38,7 @@ public class LoginController {
 			}
 			model.addObject("error", "Invalid username or password!");
 		}
+		
 
 		if (logout != null) {
 			if(log.isDebugEnabled()){
@@ -40,4 +51,6 @@ public class LoginController {
 
 		return model;
 	}
+	
+	
 }

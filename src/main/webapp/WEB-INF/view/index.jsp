@@ -4,8 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <title>Bruno Neofiti Assignment</title>
+    <title>Just a Java App</title>
 
 	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCss" />
 	<link href="${bootstrapCss}" rel="stylesheet" />
@@ -23,16 +22,14 @@
 			</div>
 			
 			<c:url value="/restricted" var="restrictedURL" />
-			<c:url value="/restricted/selectAtmByCity" var="atmURL" />
 			<c:url value="/ws/getCity" var="cityURL" />
 			<c:url value="/ws/getCityList" var="cityListURL" />
 			
 			<div class="col-lg-12">
 				<p>${content}</p>
 				<p><a href="${restrictedURL}">Access restricted area</a></p>
-				<p><a href="${atmURL}">List ATMS</a></p>
-				<p><a href="${cityURL}">Select one Dutch city</a></p>
-				<p><a href="${cityListURL}">List of Dutch cities</a></p>
+				<p><a href="${cityURL}">WS return one Dutch city (default is Utrecht)</a></p>
+				<p><a href="${cityListURL}">WS return a list of all Dutch cities (in my database)</a></p>
 			</div>
 			
 		</div>

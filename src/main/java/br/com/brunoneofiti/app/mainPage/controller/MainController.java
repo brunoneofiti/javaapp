@@ -9,6 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 
+	private ModelAndView model;
+
+	
 	/**
 	 * Home or Main Page of the application 
 	 * Restricted Access (password only)
@@ -17,7 +20,8 @@ public class MainController {
 	@RequestMapping(value = "/restricted**", method = RequestMethod.GET)
 	public ModelAndView adminPage() {
 
-		ModelAndView model = new ModelAndView();
+		model = new ModelAndView();
+		
 		model.addObject("title", "JavaApp Title");
 		model.addObject("content", "See list.");
 		model.setViewName("main");

@@ -8,6 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WelcomeController {
 
+	private ModelAndView model;
+
+	
 	/**
 	 * Initial Page or Welcome Page. 
 	 * Public Access
@@ -16,8 +19,8 @@ public class WelcomeController {
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 		
+		model = new ModelAndView();
 		
-		ModelAndView model = new ModelAndView();
 		model.addObject("title", "JavaApp Title");
 		model.addObject("content", "Welcome to JavaApp!");
 		model.setViewName("index");

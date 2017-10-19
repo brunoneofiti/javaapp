@@ -6,6 +6,9 @@ public class ATM {
 	private int distance;
 	private String type;
 	
+	public ATM() {
+		super();
+	}
 
 	public ATM(Address address, int distance, String type) {
 		this.address = address;

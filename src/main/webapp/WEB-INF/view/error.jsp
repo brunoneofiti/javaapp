@@ -4,8 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <title>Bruno Neofiti Assignment</title>
+    <title>Just a Java App</title>
 
 	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCss" />
 	<link href="${bootstrapCss}" rel="stylesheet" />

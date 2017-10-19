@@ -8,6 +8,10 @@ public class Address {
 	private String city;
 	private Geolocation geoLocation;
 	
+	public Address() {
+		super();
+	}
+	
 	public Address(String street, String housenumber, String postalcode, String city, Geolocation geoLocation) {
 		this.street = street;
 		this.housenumber = housenumber;

@@ -5,16 +5,23 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
 
 import br.com.brunoneofiti.app.atm.model.Address;
 import br.com.brunoneofiti.app.atm.model.Geolocation;
 
+@Repository 
 public class AddressDAO {
 	
 	private Log log = LogFactory.getLog(AddressDAO.class);
 	
 	private List<Address> addressList;
 	
+	/**
+	 * 
+	 * @param cityname
+	 * @return
+	 */
 	public List<Address> getAddressesOfOneCity(String cityname) {
 
 		this.addressList = new ArrayList<Address>();
@@ -35,6 +42,10 @@ public class AddressDAO {
 		return this.addressList;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
     public List<Address> getAddressesFromDatabase() {
     	
     	List<Address> addressList = new ArrayList<Address>();
@@ -49,6 +60,10 @@ public class AddressDAO {
     	return addressList;
 	}
     
+    /**
+     * 
+     * @return
+     */
     private List<Address> addToAddressList(){
     	
 		this.addressList = new ArrayList<Address>();
@@ -77,10 +92,12 @@ public class AddressDAO {
     }
     
     
+    /**
+     * 
+     * @return
+     */
     public List<Address> getAddressList(){
     	return this.addressList;
     }
-    
-    
     
 }

@@ -5,6 +5,10 @@ public class Geolocation {
 	private String lat;
 	private String lng;
 	
+	public Geolocation() {
+		super();
+	}
+	
 	public Geolocation (String lat, String lng) {
 		this.lat = lat;
 		this.lng = lng;

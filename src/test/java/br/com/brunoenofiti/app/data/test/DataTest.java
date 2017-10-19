@@ -1,4 +1,4 @@
-package com.backbase.assignment.data.test;
+package br.com.brunoenofiti.app.data.test;
 
 import static org.junit.Assert.fail;
 
@@ -6,30 +6,54 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.backbase.assignment.data.dao.TestsAtmsDAO;
-
 import br.com.brunoneofiti.app.atm.dao.AddressDAO;
+import br.com.brunoneofiti.app.atm.dao.AtmDAO;
+import br.com.brunoneofiti.app.atm.model.ATM;
 import br.com.brunoneofiti.app.atm.model.Address;
 import br.com.brunoneofiti.app.city.dao.CityDAO;
 import br.com.brunoneofiti.app.city.model.City;
 
 public class DataTest {
 
-			
+	private AtmDAO atmDAO;
+	
+	private AddressDAO addressDAO;
+	
+	private CityDAO cityDAO;
+
+//	@Test
+//	public void testJson(){
+//		
+//	}
+	
 	@Test
-	public void testJson(){
+	public void testAtm(){
 		
-		TestsAtmsDAO dao = new TestsAtmsDAO();
+		atmDAO = new AtmDAO();
 		
-		dao.create();
+		List<ATM> atmList = atmDAO.getAtmFromDatabase();
+		
+		if(atmList == null ||  atmList.isEmpty()){
+			fail();
+		}
+			
+		for(ATM atm : atmList){
+			if(atm.getAddress() == null 
+					|| atm.getType() == null){
+				
+				fail();
+			}
+		}	
 	}
+
+	
 	
 	@Test
 	public void testAddress(){
 		
-		AddressDAO dao = new AddressDAO();
+		addressDAO = new AddressDAO();
 		
-		List<Address> addressList = dao.getAddressesFromDatabase();
+		List<Address> addressList = addressDAO.getAddressesFromDatabase();
 		
 		if(addressList == null ||  addressList.isEmpty()){
 			fail();
@@ -50,9 +74,9 @@ public class DataTest {
 	@Test
 	public void testCity(){
 		
-		CityDAO dao = new CityDAO();
-
-		List<City> cityList = dao.getCities();
+		cityDAO = new CityDAO();
+		
+		List<City> cityList = cityDAO.getCitiesFromDatabase();
 		
 		if(cityList == null ||  cityList.isEmpty()){
 			fail();
