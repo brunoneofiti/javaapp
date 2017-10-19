@@ -1,23 +1,28 @@
 package br.com.brunoneofiti.app.atm.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.brunoneofiti.app.atm.model.ATM;
 
-@Controller
+@RestController
 public class ATMService {
 
 	private Log log = LogFactory.getLog(ATMService.class);
@@ -28,72 +33,16 @@ public class ATMService {
 	 * @return
 	 */
 	@RequestMapping(value = "/ws", method = RequestMethod.GET)
-	public ModelAndView getLocalWS() {
+	public List<ATM> getLocalWS() {
 
-//OK
 //		String url = ""https://www.ing.nl/api/locator/atms"";
-//		String url = "http://localhost:8080/javaapp/ws/getAtmList"; 
-//		callRest(url);
-
-		String file = "c\\apps\\workspace-neon\\brunoneofiti\\javaapp\\src\\main\\java\\com\\backbase\\assignment\\atm\\dao\\data.json";
 		
-		callJson(file);
+		String url = "http://localhost:8080/javaapp/ws/getAtmList"; 
+		callRest(url);
 		
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "JavaApp Title");
-		model.addObject("content", "See list.");
-		model.setViewName("main");
-
-		return model;
+		String file = "c://apps//workspace-neon//brunoneofiti//javaapp//src//main//java//br//com//brunoneofiti//app//atm//dao//data.json";	
+    	return callJson(file);
 	}
-	
-	
-	private void callJson(String filename) {
-
-		ObjectMapper mapper = new ObjectMapper();
-		
-		TypeReference<ATM> mapType = new TypeReference<ATM>() {};
-		
-		InputStream inputStream = TypeReference.class.getResourceAsStream(filename);
-		
-		try {
-			
-			ATM atm = mapper.readValue(inputStream, mapType);
-			
-			log.info("callJson 1");
-			
-			System.out.println(atm.toString());
-			
-		} catch (IOException e) {
-
-			log.info("callJson bad 1");
-			log.info(e.getMessage());
-		}
-		
-		//
-		
-		log.info("callJson 2");
-		ATM atm = null;
-		
-		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
-
-		try {
-			
-			log.info("callJson 2.1");
-		    String str = inputStream.toString(); 
-			log.info("callJson 2.2");
-		    
-		    atm = mapper.readValue(str, ATM.class); 
-		    
-			log.info(atm.toString());
-		    
-		} catch (Exception e) {
-			
-			log.info("bad 2");
-			log.info(e.getMessage());
-		}
-	}
-
 	
     /**
      * Call a JSON/REST web service
@@ -101,6 +50,8 @@ public class ATMService {
      */
 	private void callRest(String url) {
     
+		List<ATM> atmList = new ArrayList<ATM>();
+		
     	RestTemplate restTemplate = new RestTemplate();
 
     	try {
@@ -108,11 +59,66 @@ public class ATMService {
     		Object obj = restTemplate.getForObject(url, Object.class);
     		
 			log.info("result:" + obj.toString());
-    		
+			
+	        StringBuilder stringBuilder = new StringBuilder();
+
+	        stringBuilder.append(obj.toString());
+			
+			ObjectMapper mapper = new ObjectMapper();
+	        
+	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
+
+			log.info(atmList.toString());
+			
     	}catch (Exception e) {
     		
 			log.error(e.getMessage());
     	}
 	}
+	
+	/**
+	 * Read File
+	 * @param filename
+	 * @return
+	 */
+	private List<ATM> callJson(String filename) {
+
+		List<ATM> atmList = new ArrayList<ATM>();
+		
+        InputStream inputStream;
+        
+		try {
+			
+			inputStream = new FileInputStream(new File(filename));
+			
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+	        StringBuilder stringBuilder = new StringBuilder();
+	        
+	        String line;
+	        
+	        while ((line = reader.readLine()) != null) {
+	        	
+	        	if(!line.equals(")]}',")){
+	        		stringBuilder.append(line);
+	        	}
+	        }
+	        
+	        reader.close();
+	        
+	        ObjectMapper mapper = new ObjectMapper();
+
+	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
+	        
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return atmList;
+	}
+
 	
 }
