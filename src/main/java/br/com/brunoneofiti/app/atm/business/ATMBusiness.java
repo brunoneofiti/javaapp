@@ -1,26 +1,30 @@
 package br.com.brunoneofiti.app.atm.business;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.brunoneofiti.app.atm.dao.AddressDAO;
 import br.com.brunoneofiti.app.atm.dao.AtmDAO;
 import br.com.brunoneofiti.app.atm.model.ATM;
 import br.com.brunoneofiti.app.atm.model.Address;
 import br.com.brunoneofiti.app.atm.model.Geolocation;
-import br.com.brunoneofiti.app.city.dao.CityDAO;
 import br.com.brunoneofiti.app.city.model.City;
 import br.com.brunoneofiti.app.common.business.BusinessException;
 
@@ -30,9 +34,89 @@ public class ATMBusiness {
 	private Log log = LogFactory.getLog(ATMBusiness.class);
 	
 	@Autowired
-	private AtmDAO dao;
+	private AtmDAO atmDAO;
 
 	private	List<ATM> atmList;
+
+	
+	/**
+	 * Read File
+	 * @param filename
+	 * @return
+	 */
+	public List<ATM> callJson() {
+		
+		List<ATM> atmList = new ArrayList<ATM>();
+		
+        InputStream inputStream;
+        
+		try {
+			
+			ClassLoader classLoader = getClass().getClassLoader();
+			
+			inputStream = new FileInputStream(new File(classLoader.getResource("data//data.json").getFile()));
+			
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+	        StringBuilder stringBuilder = new StringBuilder();
+	        
+	        String line;
+	        
+	        while ((line = reader.readLine()) != null) {
+	        	
+	        	if(!line.equals(")]}',")){
+	        		stringBuilder.append(line);
+	        	}
+	        }
+	        
+	        reader.close();
+	        
+	        ObjectMapper mapper = new ObjectMapper();
+
+	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
+	        
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return atmList;
+	}
+
+	
+    /**
+     * Call a JSON/REST web service
+     * @param url
+     */
+	public void callRest(String url) {
+    
+		List<ATM> atmList = new ArrayList<ATM>();
+		
+    	RestTemplate restTemplate = new RestTemplate();
+
+    	try {
+    		
+    		Object obj = restTemplate.getForObject(url, Object.class);
+    		
+			log.info("result:" + obj.toString());
+			
+	        StringBuilder stringBuilder = new StringBuilder();
+
+	        stringBuilder.append(obj.toString());
+	        
+	        ObjectMapper mapper = new ObjectMapper();
+
+	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
+
+			log.info(atmList.toString());
+			
+    	}catch (Exception e) {
+    		
+			log.error(e.getMessage());
+    	}
+	}
 
 	
 	/**
@@ -42,11 +126,10 @@ public class ATMBusiness {
 	public List<ATM> getAllATMs() throws BusinessException{
 	
 		//validate ATMs from database
-		checkAtms();
+//		checkAtms();
 		
-		return dao.getAtmFromDatabase();
+		return atmDAO.getAtmFromDatabase();
 	}
-	
 	
 	/**
 	 * 
@@ -64,7 +147,7 @@ public class ATMBusiness {
 			
 			atmList = new ArrayList<ATM>();
 			
-			atmList = dao.getAtmFromDatabase();
+			atmList = atmDAO.getAtmFromDatabase();
 			
 			//add City to list 
 			atmList.add(new ATM(new Address("Avenue Main", "10", "00545", city.getName(), new Geolocation("12", "33")), 10, "ING"));
@@ -83,117 +166,21 @@ public class ATMBusiness {
     	return atmList;
 	}
 	
-	
-	
-	/**
-	 * If you didnt pass cityname
-	 * Consult "Database" and return name of all cities of ATM JSON
-	 * 
-	 * If you pass the city name.
-	 * Consult "Database" and check if it exist in the list, then, If is true return cityname, if is false return BusinessException
-	 * 
-	 * @param cityname 
-	 * @param atmList
-	 * @return
-	 * @throws BusinessException
-	 */
-	public List<String> getCityByATMList(String cityname) throws BusinessException{
-		
-		Set<String> citySet = new HashSet<String>();
-		
-		//check for valid cities and add it to HashSet
-		for(ATM atm : dao.getAtmFromDatabase()){
-			
-			if(atm == null){
-				throw new BusinessException("Empty ATM");
-				
-			}else if(atm.getAddress() == null){
-				throw new BusinessException("Empty Address");
-				
-			}else if(atm.getAddress().getCity() == null){
-				throw new BusinessException("Empty City");
-				
-			}else{
-				
-				citySet.add(atm.getAddress().getCity());
-			}
-		}
-		
-		List<String> cityList = new ArrayList<String>(); 
-		
-		if(cityname.equals("all")){
-			
-			cityList.addAll(citySet);
-			
-		}else if(citySet.contains(cityname)){
-			
-			cityList.add(cityname);
-		}else {
-			
-			throw new BusinessException("City not found");
-		}
-		
-		return cityList;
-		
-	}
-	
 	/**
 	 * 
-	 * @param dao
+	 * @param atmDAO
 	 * @throws BusinessException
 	 */
 	public void checkAtms() throws BusinessException{
 		
 		if(log.isDebugEnabled()){
-			log.debug("getAtmList:" + dao.getAtmFromDatabase());
-			log.debug("getAtmFromDatabase:" + dao.getAtmFromDatabase());
+			log.debug("getAtmList:" + atmDAO.getAtmFromDatabase());
+			log.debug("getAtmFromDatabase:" + atmDAO.getAtmFromDatabase());
 		}
 
-		
 		//Business Rule
-		if(dao.getAtmFromDatabase() == null){
+		if(atmDAO.getAtmFromDatabase() == null){
 	        throw new BusinessException("Cannot find an ATM!");
 		}
 	}
-
-	
-	/**
-	 * 
-	 * @param dao
-	 * @throws BusinessException
-	 */
-	public void checkCities(CityDAO dao) throws BusinessException{
-		
-		//Business Rule
-		if(dao.getCitiesFromDatabase() == null || dao.getCity() == null){
-	        
-			if(log.isDebugEnabled()){
-				log.debug("getCities:" + dao.getCitiesFromDatabase());
-				log.debug("getCity:" + dao.getCity());
-			}
-			
-			throw new BusinessException("Cannot call city!");
-		}
-	}
-
-
-	/**
-	 * Validate if all Addresses are valid in database
-	 * @param dao
-	 * @throws BusinessException
-	 */
-	public void checkAddress(AddressDAO dao) throws BusinessException{
-		
-		if(log.isDebugEnabled()){
-			log.debug("getAddressList:" + dao.getAddressList());
-			log.debug("getAddressesFromDatabase:" + dao.getAddressesFromDatabase());
-		}
-		
-		//Business Rule
-		if(dao.getAddressesFromDatabase() == null){
-	        throw new BusinessException("Cannot find an address!");
-		}
-	}
-
-	
 }

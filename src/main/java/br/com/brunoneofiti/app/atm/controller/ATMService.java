@@ -1,31 +1,25 @@
 package br.com.brunoneofiti.app.atm.controller;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import br.com.brunoneofiti.app.atm.business.ATMBusiness;
 import br.com.brunoneofiti.app.atm.model.ATM;
+import br.com.brunoneofiti.app.common.business.BusinessException;
 
 @RestController
 public class ATMService {
 
-	private Log log = LogFactory.getLog(ATMService.class);
+	@Autowired
+	private ATMBusiness business;
 	
 	/**
 	 * Public WS.
@@ -36,89 +30,39 @@ public class ATMService {
 	public List<ATM> getLocalWS() {
 
 //		String url = ""https://www.ing.nl/api/locator/atms"";
-		
 		String url = "http://localhost:8080/javaapp/ws/getAtmList"; 
-		callRest(url);
 		
-		String file = "c://apps//workspace-neon//brunoneofiti//javaapp//src//main//java//br//com//brunoneofiti//app//atm//dao//data.json";	
-    	return callJson(file);
-	}
-	
-    /**
-     * Call a JSON/REST web service
-     * @param url
-     */
-	private void callRest(String url) {
-    
-		List<ATM> atmList = new ArrayList<ATM>();
+		business.callRest(url);
 		
-    	RestTemplate restTemplate = new RestTemplate();
-
-    	try {
-    		
-    		Object obj = restTemplate.getForObject(url, Object.class);
-    		
-			log.info("result:" + obj.toString());
-			
-	        StringBuilder stringBuilder = new StringBuilder();
-
-	        stringBuilder.append(obj.toString());
-			
-			ObjectMapper mapper = new ObjectMapper();
-	        
-	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
-
-			log.info(atmList.toString());
-			
-    	}catch (Exception e) {
-    		
-			log.error(e.getMessage());
-    	}
+    	return business.callJson();
 	}
-	
+
+
+
 	/**
-	 * Read File
-	 * @param filename
+	 * Public WS.
+	 * List ATM by cityname
+	 * @param cityname
 	 * @return
+	 * @throws BusinessException 
 	 */
-	private List<ATM> callJson(String filename) {
-
-		List<ATM> atmList = new ArrayList<ATM>();
-		
-        InputStream inputStream;
+    @RequestMapping("/ws/getAtmList")
+    public List<ATM> getAtmList() 
+    		throws BusinessException {
         
-		try {
-			
-			inputStream = new FileInputStream(new File(filename));
-			
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-	        StringBuilder stringBuilder = new StringBuilder();
-	        
-	        String line;
-	        
-	        while ((line = reader.readLine()) != null) {
-	        	
-	        	if(!line.equals(")]}',")){
-	        		stringBuilder.append(line);
-	        	}
-	        }
-	        
-	        reader.close();
-	        
-	        ObjectMapper mapper = new ObjectMapper();
-
-	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
-	        
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return atmList;
-	}
-
-	
+		return business.getAllATMs();
+    }
+    
+	/**
+	 * Public WS
+	 * Create ATM passing JSON
+	 * @param json
+	 * @return
+	 * @throws BusinessException 
+	 */
+    @RequestMapping("/ws/createAtm")
+    public @ResponseBody List<ATM> createAtm(@RequestParam(value="json") String json) throws BusinessException {
+        
+		return business.createCityValidate(json);
+    }
 }

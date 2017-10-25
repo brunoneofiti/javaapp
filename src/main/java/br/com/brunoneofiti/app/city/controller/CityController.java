@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.brunoneofiti.app.atm.dao.AddressDAO;
 import br.com.brunoneofiti.app.atm.model.Address;
-import br.com.brunoneofiti.app.city.dao.CityDAO;
+import br.com.brunoneofiti.app.city.business.CityBusiness;
 import br.com.brunoneofiti.app.city.model.City;
+import br.com.brunoneofiti.app.common.business.BusinessException;
 
 @RestController
 public class CityController {
@@ -20,8 +21,9 @@ public class CityController {
 	private AddressDAO addressDAO;
 	
 	@Autowired
-	private CityDAO cityDAO; 
+	private CityBusiness business;
 
+	
 	/**
 	 * 
 	 * @param cityname
@@ -47,13 +49,27 @@ public class CityController {
     /**
      * 
      * @return List of all cities in the database
+     * @throws BusinessException 
      */
     @RequestMapping("/ws/getCityList")
-    public @ResponseBody List<City> getCityList() {
+    public @ResponseBody List<City> getCityList() throws BusinessException {
  
     	//return all cities
-    	return cityDAO.getCitiesFromDatabase();
+    	return business.getAllCities();
     }
 
+	/**
+	 * Public WS.
+	 * List ATM by cityname
+	 * @param cityname
+	 * @return
+	 * @throws BusinessException 
+	 */
+    @RequestMapping("/ws/getDutchCityList")
+    public List<String> getDutchCityList(@RequestParam(value="cityname", defaultValue="all") String cityname) 
+    		throws BusinessException {
+        
+		return business.getCityByATMList(cityname);
+    }
 	
 }
