@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.brunoneofiti.app.atm.model.ATM;
@@ -30,16 +29,13 @@ public class AddressDAO {
 		List<Address> addressList = new ArrayList<Address>();
 		
 		if(cityname == null) {
-			if(log.isDebugEnabled()){
-				log.debug("cityname is null, returning empty list of Address");
-			}
+			if(log.isDebugEnabled()) log.debug("cityname is null, returning empty list of Address");
+				
 			return new ArrayList<Address>();
 		}
 		
     	for (Address a : getAddressesFromDatabase()) {
-			if(a.getCity().equalsIgnoreCase(cityname)) {
-				addressList.add(a);
-			}
+			if(a.getCity().equalsIgnoreCase(cityname)) addressList.add(a);
 		}
     	
 		return addressList;
@@ -57,15 +53,12 @@ public class AddressDAO {
 			
 			AtmDAO = new AtmDAO();
 			
-			List<ATM> atmList = AtmDAO.getAtmFromDatabase();
-	    	
-			for(ATM atm : atmList){
-	    		
+			for(ATM atm : AtmDAO.getAtmFromDatabase()){
 	        	addressList.add(atm.getAddress());
 	    	}
 			
 		} catch (BusinessException e) {
-			
+			log.error("cannot find Address");
 			e.printStackTrace();
 		}
 

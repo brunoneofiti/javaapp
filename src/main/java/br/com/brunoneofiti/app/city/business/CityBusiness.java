@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +38,23 @@ public class CityBusiness {
 	
 		checkCities(cityDAO);
 		
+		Set<City> citySet = new HashSet<City>(cityDAO.getCitiesFromDatabase());
+		
+		if(citySet.size() > 0) return new ArrayList<City>(citySet);
+		
 		return cityDAO.getCitiesFromDatabase();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws BusinessException
+	 */
+	public City getOneCity(String name) throws BusinessException{
+	
+		checkCities(cityDAO);
+		
+		return cityDAO.getCity(name);
 	}
 	
 	/**
@@ -72,37 +89,27 @@ public class CityBusiness {
 		//check for valid cities and add it to HashSet
 		for(ATM atm : atmDAO.getAtmFromDatabase()){
 			
-			if(atm == null){
+			if(atm == null)
 				throw new BusinessException("Empty ATM");
-				
-			}else if(atm.getAddress() == null){
+			else if(atm.getAddress() == null)
 				throw new BusinessException("Empty Address");
-				
-			}else if(atm.getAddress().getCity() == null){
+			else if(atm.getAddress().getCity() == null)
 				throw new BusinessException("Empty City");
-				
-			}else{
-				
+			else
 				citySet.add(atm.getAddress().getCity());
-			}
+				
 		}
 		
 		List<String> cityList = new ArrayList<String>(); 
 		
-		if(cityname.equals("all")){
-			
-			cityList.addAll(citySet);
-			
-		}else if(citySet.contains(cityname)){
-			
+		if("all".equals(cityname)) 
+			cityList.addAll(citySet); 
+		else if(citySet.contains(cityname))
 			cityList.add(cityname);
-		}else {
-			
+		else
 			throw new BusinessException("City not found");
-		}
 		
-		return cityList;
-		
+		return cityList.stream().sorted().collect(Collectors.toList());
 	}
 	
 	
@@ -113,16 +120,13 @@ public class CityBusiness {
 	 */
 	public void checkCities(CityDAO dao) throws BusinessException{
 		
-		//Business Rule
-		if(dao.getCitiesFromDatabase() == null || dao.getCity() == null){
-	        
-			if(log.isDebugEnabled()){
-				log.debug("getCities:" + dao.getCitiesFromDatabase());
-				log.debug("getCity:" + dao.getCity());
-			}
-			
-			throw new BusinessException("Cannot call city!");
+		if(log.isDebugEnabled()){
+			log.debug("getCities:" + dao.getCitiesFromDatabase());
+			log.debug("getCity:" + dao.getCity());
 		}
+		
+		//Business Rule
+		if(dao.getCitiesFromDatabase() == null) throw new BusinessException("Cannot call city!"); 
 	}
 	
 }

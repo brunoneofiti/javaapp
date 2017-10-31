@@ -28,6 +28,11 @@
 
 		<!-- JUnit version -->
 		<version.junit>4.12</version.junit>
+		
+		<!-- A -->
+		<version.google.maps>0.2.4</version.google.maps>
+		<version.slf4j-nop>1.7.25</version.slf4j-nop>
+		
 
 		<!-- other plugin versions -->
 		<version.compiler.plugin>3.7.0</version.compiler.plugin>
@@ -51,7 +56,7 @@
 		    <scope>provided</scope>
 		</dependency>
 
-	    <!-- Servlet -->
+	    <!-- JSP -->
 	    <dependency>
 	        <groupId>javax.servlet.jsp</groupId>
 	        <artifactId>jsp-api</artifactId>
@@ -146,6 +151,20 @@
 		        </exclusion>
 		    </exclusions>
 		</dependency>
+		
+		<!-- Google Maps -->
+		<dependency>
+		    <groupId>com.google.maps</groupId>
+		    <artifactId>google-maps-services</artifactId>
+		    <version>${version.google.maps}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-nop</artifactId>
+		    <version>${version.slf4j-nop}</version>
+		</dependency>		
+		
+		
 	</dependencies>
 
 	<build>

@@ -1,9 +1,12 @@
 package br.com.brunoneofiti.app.city.dao;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import br.com.brunoneofiti.app.atm.dao.AtmDAO;
@@ -14,18 +17,59 @@ import br.com.brunoneofiti.app.common.business.BusinessException;
 @Repository 
 public class CityDAO {
 	
+	private Log log = LogFactory.getLog(CityDAO.class);
+	
 	private	AtmDAO atmDAO;
 	
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private City createDutchCity(String name){
+		
+		City city = null;
+		
+		switch (name) {
+			case "Utrecht" : city = new City(name, "Utrecht", "Netherlands");
+				break;   
+			case "Eindhoven" : city = new City(name, "Hertogenbosch", "Netherlands");
+				break;
+			case "Rotterdam" : city = new City(name, "The Hague", "Netherlands");
+				break;
+			case "Amsterdam" : city = new City(name, "Haarlem", "Netherlands");
+				break;
+			case "Maastricht" : city = new City(name, "Maastricht", "Netherlands");
+				break;
+			default: city = new City(name, "Province", "Netherlands");
+		}
+		
+		return city;
+	}
+	
+	
+	public City getCity() {
+		return getCity("");
+	}
+
 	
 	/**
 	 * Return just first city of the database
 	 * @return
 	 */
-	public City getCity() {
-
+	public City getCity(String name) {
+		
 		List<City> cityList = new ArrayList<City>();
 		
 		cityList = getCitiesFromDatabase();
+		
+		if(name.equals("") || name == null) return cityList.get(0);
+		
+		City myCity = createDutchCity(name);
+		
+		for(City c : cityList){
+			if(c.equals(myCity)) return myCity;
+		}
 		
 		return cityList.get(0);
 	}
@@ -37,7 +81,7 @@ public class CityDAO {
 	 */
     public List<City> getCitiesFromDatabase() {
     	
-    	List<City> cityList = new ArrayList<City>();
+    	Set<City> citySet = new HashSet<City>();
     	
 		try {
 	    	
@@ -46,50 +90,17 @@ public class CityDAO {
 			List<ATM> atmList = atmDAO.getAtmFromDatabase();
 			
 	    	for(ATM atm : atmList){
-	    		
-				switch (atm.getAddress().getCity()) {  
-				
-					case "Utrecht" : cityList.add(new City(atm.getAddress().getCity(), "Utrecht", "Netherlands"));  
-					break;   
-					
-					case "Eindhoven" : cityList.add(new City(atm.getAddress().getCity(), "Hertogenbosch", "Netherlands"));  
-					break;
-					
-					case "Rotterdam" : cityList.add(new City(atm.getAddress().getCity(), "The Hague", "Netherlands"));  
-					break;
-					
-					case "Amsterdam" : cityList.add(new City(atm.getAddress().getCity(), "Haarlem", "Netherlands"));  
-					break;
-					
-					case "Maastricht" : cityList.add(new City(atm.getAddress().getCity(), "Maastricht", "Netherlands"));  
-					break;
-					
-					default: cityList.add(new City(atm.getAddress().getCity(), "Province", "Netherlands"));
-				}
+	    		citySet.add(createDutchCity(atm.getAddress().getCity()));
 	    	}
 	    	
 		} catch (BusinessException e) {
+			
+			log.error("problem calling data from database (json file in fact) ");
+			
 			e.printStackTrace();
 		}
     	
-    	return cityList;
+    	return new ArrayList<City>(citySet);
 	}
-    
-    
-    /**
-     * 
-     * @return
-    private List<City> addToCityList(){
-    	
-    	cityList = new ArrayList<City>();
-		
-    	cityList.add(new City("Utrecht", "Utrecht", "Netherlands"));
-    	cityList.add(new City("Eindhoven","Hertogenbosch",  "Netherlands"));
-    	cityList.add(new City("Rotterdam","The Hague",  "Netherlands"));
-    	cityList.add(new City("Amsterdam", "Haarlem", "Netherlands"));
-    	cityList.add(new City("Maastricht", "Maastricht", "Netherlands"));
 
-    	return this.cityList;
-    }
-     */
 }

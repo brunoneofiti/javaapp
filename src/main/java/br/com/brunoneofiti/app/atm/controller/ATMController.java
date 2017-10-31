@@ -1,7 +1,5 @@
 package br.com.brunoneofiti.app.atm.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,8 +11,6 @@ import br.com.brunoneofiti.app.common.business.BusinessException;
 
 @RestController
 public class ATMController {
-	
-	private Log log = LogFactory.getLog(ATMController.class);
 	
 	@Autowired
 	private CityBusiness business;

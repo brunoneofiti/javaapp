@@ -24,10 +24,13 @@
 			<c:url value="/restricted" var="restrictedURL" />
 			<c:url value="/ws/getCity" var="cityURL" />
 			<c:url value="/ws/getCityList" var="cityListURL" />
+			<c:url value="/map" var="mapURL" />
+			
 			
 			<div class="col-lg-12">
 				<p>${content}</p>
 				<p><a href="${restrictedURL}">Access restricted area</a></p>
+				<p><a href="${mapURL}">Map</a></p>
 				<p><a href="${cityURL}">WS return one Dutch city (default is Utrecht)</a></p>
 				<p><a href="${cityListURL}">WS return a list of all Dutch cities (in my database)</a></p>
 			</div>

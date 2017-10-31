@@ -21,23 +21,56 @@ public class ATMService {
 	@Autowired
 	private ATMBusiness business;
 	
+	private Log log = LogFactory.getLog(ATMBusiness.class);
+
 	/**
 	 * Public WS.
-	 * List ATM by cityname, call local web service
+	 * List ATM. Call remote web service (could not work if the WS is offline)
 	 * @return
 	 */
-	@RequestMapping(value = "/ws", method = RequestMethod.GET)
-	public List<ATM> getLocalWS() {
+	@RequestMapping(value = "/ws/getRemoteWS", method = RequestMethod.GET)
+	public List<ATM> getRemoteWS() {
 
-//		String url = ""https://www.ing.nl/api/locator/atms"";
-		String url = "http://localhost:8080/javaapp/ws/getAtmList"; 
+		List<ATM> list = business.callRest("https://www.ing.nl/api/locator/atms");
 		
-		business.callRest(url);
+		log.info("third try - Remote WS");
+		log.info("file size:" + list.size());
 		
-    	return business.callJson();
+    	return list;
 	}
 
+	
+	/**
+	 * Public WS.
+	 * List ATM. Call local web service (copy of the return of the remote WS)
+	 * @return
+	 */
+	@RequestMapping(value = "/ws/getLocalWS", method = RequestMethod.GET)
+	public List<ATM> getLocalWS() {
 
+		List<ATM> list = business.callRest("http://localhost:8080/javaapp/ws/getAtmList");
+		
+		log.info("second try - Local WS");
+		log.info("file size:" + list.size());
+		
+    	return list;
+	}
+
+	/**
+	 * Public WS.
+	 * List ATM. Call local json file (copy of the return of the remote WS)
+	 * @return
+	 */
+	@RequestMapping(value = "/ws/getLocalFile", method = RequestMethod.GET)
+	public List<ATM> getLocalFileWS() {
+
+		List<ATM> list = business.callJsonLocalFile();
+		
+		log.info("first try - Local json file");
+		log.info("file size:" + list.size());
+		
+    	return list;
+	}
 
 	/**
 	 * Public WS.
@@ -52,6 +85,7 @@ public class ATMService {
         
 		return business.getAllATMs();
     }
+    
     
 	/**
 	 * Public WS

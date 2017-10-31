@@ -33,13 +33,8 @@ public class CityController {
     public String getCity(@RequestParam(value="cityname", defaultValue="Utrecht") String cityname) {
         
     	//get information from the "database"
-    	
-    	List<Address> addressList =  addressDAO.getAddressesOfOneCity(cityname);
-    	
-    	for(Address a : addressList) {
-    		if(a.getCity() != null) {
-        		return a.getCity();
-    		}
+    	for(Address a : addressDAO.getAddressesOfOneCity(cityname)) {
+    		if(a.getCity() != null) return a.getCity(); 
     	}
     	
     	//if not find return null
@@ -54,7 +49,6 @@ public class CityController {
     @RequestMapping("/ws/getCityList")
     public @ResponseBody List<City> getCityList() throws BusinessException {
  
-    	//return all cities
     	return business.getAllCities();
     }
 

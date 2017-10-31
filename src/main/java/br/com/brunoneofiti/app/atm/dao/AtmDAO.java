@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -90,15 +89,15 @@ public class AtmDAO {
     		addressDAO = new AddressDAO();
     		
     		for(Address address: addressDAO.getAddressesFromDatabase()){
-        		
         		if(address != null){
-        			ATM atm = new ATM(address, 0, "ING");
+        			ATM atm = new ATM(address, 0, "XNG");
         			atmList.add(atm);
         		}
         	}
 
     		
     	}catch (Exception e) {
+    		
     		log.error("Business Exception");
     		log.error(e.getMessage());
 		}

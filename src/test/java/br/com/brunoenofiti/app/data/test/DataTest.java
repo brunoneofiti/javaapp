@@ -32,7 +32,7 @@ public class DataTest {
 		
 		ATMBusiness atmBusiness = new ATMBusiness();
 		
-		List<ATM>  atmList = atmBusiness.callJson();
+		List<ATM>  atmList = atmBusiness.callJsonLocalFile();
 		
 		log.info("size:" + atmList.size());
 	}
