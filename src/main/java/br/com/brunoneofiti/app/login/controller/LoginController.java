@@ -14,7 +14,6 @@ public class LoginController {
 	private Log log = LogFactory.getLog(LoginController.class);
 	
 	private ModelAndView model;
-
 	
 	/**
 	 * Login Page. 
@@ -33,17 +32,13 @@ public class LoginController {
 		model.addObject("title", "Please, login with user and password");
 
 		if (error != null) {
-			if(log.isDebugEnabled()){
-				log.debug("User fail to login");
-			}
+			if(log.isDebugEnabled()) log.debug("User fail to login");
 			model.addObject("error", "Invalid username or password!");
 		}
 		
 
 		if (logout != null) {
-			if(log.isDebugEnabled()){
-				log.debug("User logout sucessfull");
-			}
+			if(log.isDebugEnabled()) log.debug("User logout sucessfull");
 			model.addObject("content", "Bye!");
 		}
 
@@ -51,6 +46,4 @@ public class LoginController {
 
 		return model;
 	}
-	
-	
 }

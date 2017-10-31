@@ -45,9 +45,7 @@ public class AddressBusiness {
 		}
 		
 		//Business Rule
-		if(dao.getAddressesFromDatabase() == null){
-	        throw new BusinessException("Cannot find an address!");
-		}
+		if(dao.getAddressesFromDatabase() == null) throw new BusinessException("Cannot find an address!"); 
 	}
 
 	

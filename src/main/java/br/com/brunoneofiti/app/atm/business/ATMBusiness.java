@@ -38,13 +38,12 @@ public class ATMBusiness {
 
 	private	List<ATM> atmList;
 
-	
 	/**
 	 * Read File
 	 * @param filename
 	 * @return
 	 */
-	public List<ATM> callJson() {
+	public List<ATM> callJsonLocalFile() {
 		
 		List<ATM> atmList = new ArrayList<ATM>();
 		
@@ -90,17 +89,15 @@ public class ATMBusiness {
      * Call a JSON/REST web service
      * @param url
      */
-	public void callRest(String url) {
+	public List<ATM> callRest(String url) {
     
 		List<ATM> atmList = new ArrayList<ATM>();
 		
     	RestTemplate restTemplate = new RestTemplate();
 
     	try {
-    		
-    		Object obj = restTemplate.getForObject(url, Object.class);
-    		
-			log.info("result:" + obj.toString());
+
+    		String obj = restTemplate.getForObject(url, String.class);
 			
 	        StringBuilder stringBuilder = new StringBuilder();
 
@@ -109,13 +106,13 @@ public class ATMBusiness {
 	        ObjectMapper mapper = new ObjectMapper();
 
 	        atmList = mapper.readValue(stringBuilder.toString(), new TypeReference<List<ATM>>(){});
-
-			log.info(atmList.toString());
 			
     	}catch (Exception e) {
     		
 			log.error(e.getMessage());
     	}
+    	
+		return atmList;
 	}
 
 	
@@ -125,9 +122,6 @@ public class ATMBusiness {
 	 */
 	public List<ATM> getAllATMs() throws BusinessException{
 	
-		//validate ATMs from database
-//		checkAtms();
-		
 		return atmDAO.getAtmFromDatabase();
 	}
 	
@@ -179,8 +173,6 @@ public class ATMBusiness {
 		}
 
 		//Business Rule
-		if(atmDAO.getAtmFromDatabase() == null){
-	        throw new BusinessException("Cannot find an ATM!");
-		}
+		if(atmDAO.getAtmFromDatabase() == null) throw new BusinessException("Cannot find an ATM!");
 	}
 }
